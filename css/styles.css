@@ -113,3 +113,35 @@ body{
 
 /* Small helpers */
 .hidden{display:none}
+
+/* Botón de compartir enlace */
+.share-btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all .2s;
+  margin-top: 0.5rem;
+}
+
+.share-btn:hover {
+  background: var(--accent-dark);
+  transform: scale(1.05);
+}
+
+.share-btn:active {
+  transform: scale(0.98);
+}
+
+/* Estilo para estrofas de poesía */
+.poem-stanza {
+  margin-bottom: 1.5rem;
+}
+
+.poem-stanza:last-child {
+  margin-bottom: 0;
+}

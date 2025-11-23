@@ -1,9 +1,11 @@
 /*
-  main.js
+  main.js - Versión actualizada con links compartibles
   - Carga posts desde posts/posts.json
   - Renderiza tarjetas, aplica filtros y abre modal con contenido completo
+  - URLs únicas con hash (#slug) para compartir posts específicos
+  - Botón "Copiar enlace" en cada post
+  - Soporte para arrays de estrofas en poesía
   - Ordena por fecha (más recientes primero)
-  - Vanilla JS, sin dependencias externas
 */
 (function(){
   'use strict'
@@ -26,6 +28,16 @@
       const d = new Date(iso);
       return d.toLocaleDateString('es-ES',{year:'numeric',month:'long',day:'numeric'});
     }catch(e){return iso}
+  }
+
+  // Escapa HTML para prevenir XSS
+  function escapeHTML(s){
+    return String(s)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#39;');
   }
 
   // Crea tarjeta de post
@@ -84,63 +96,99 @@
     });
   }
 
-  // Abrir modal y llenar contenido
-  function openModal(post){
-    modal.setAttribute('aria-hidden','false');
-    modalTitle.textContent = post.title;
-    modalDate.textContent = formatDate(post.date);
-    // El contenido puede ser string, array de párrafos o array de estrofas (arrays de líneas)
+  // Renderiza el contenido del post en el modal
+  function renderContent(post){
     modalBody.innerHTML = '';
-    function escapeHTML(s){
-      return String(s)
-        .replace(/&/g,'&amp;')
-        .replace(/</g,'&lt;')
-        .replace(/>/g,'&gt;')
-        .replace(/"/g,'&quot;')
-        .replace(/'/g,'&#39;');
-    }
-
+    
     if(Array.isArray(post.content)){
       // Cada elemento puede ser una string (párrafo) o un array de líneas (estrofa)
       post.content.forEach(item => {
-        const para = document.createElement('p');
         if(Array.isArray(item)){
-          // unir líneas con <br>, escapando el contenido
-          para.innerHTML = item.map(line => escapeHTML(line)).join('<br>');
+          // Es una estrofa (array de versos)
+          const stanza = document.createElement('p');
+          stanza.className = 'poem-stanza';
+          stanza.innerHTML = item.map(line => escapeHTML(line)).join('<br>');
+          modalBody.appendChild(stanza);
         } else {
-          // si es string, convertir secuencias literales a saltos y usar <br> para respetar líneas
-          let text = String(item);
-          text = text.replace(/\\r\\n/g,'\r\n').replace(/\\n/g,'\n');
-          text = text.replace(/\r\n/g,'\n');
-          // si tiene doble salto, dividir en párrafos adicionales
-          const parts = text.split(/\n\s*\n+/);
-          if(parts.length > 1){
-            parts.forEach((pPart, idx)=>{
-              const pEl = document.createElement('p');
-              pEl.innerHTML = escapeHTML(pPart.trim()).replace(/\n/g,'<br>');
-              modalBody.appendChild(pEl);
-            });
-            return; // ya añadimos los párrafos
-          }
-          para.innerHTML = escapeHTML(text).replace(/\n/g,'<br>');
+          // Es un párrafo simple
+          const para = document.createElement('p');
+          para.textContent = item;
+          modalBody.appendChild(para);
         }
-        modalBody.appendChild(para);
       });
     } else if(typeof post.content === 'string'){
-      // Normalizar contenido: convertir secuencias literales "\\n" en saltos reales,
-      // luego dividir por dobles saltos de línea para crear párrafos.
-      let text = post.content;
-      text = text.replace(/\\r\\n/g, '\r\n').replace(/\\n/g, '\n');
-      text = text.replace(/\r\n/g, '\n');
-      const parts = text.split(/\n\s*\n+/);
-      parts.forEach(p => {
-        const para = document.createElement('p');
-        para.innerHTML = escapeHTML(p.trim()).replace(/\n/g,'<br>');
-        modalBody.appendChild(para);
-      });
-    } else {
-      modalBody.textContent = String(post.content);
+      // Contenido como string simple
+      const para = document.createElement('p');
+      para.textContent = post.content;
+      modalBody.appendChild(para);
     }
+  }
+
+  // Crea el botón de compartir
+  function createShareButton(post){
+    const shareBtn = document.createElement('button');
+    shareBtn.className = 'share-btn';
+    shareBtn.innerHTML = '🔗 Copiar enlace';
+    shareBtn.title = 'Copiar enlace para compartir';
+    
+    shareBtn.addEventListener('click', async ()=>{
+      const url = `${window.location.origin}${window.location.pathname}#${post.slug}`;
+      
+      try {
+        await navigator.clipboard.writeText(url);
+        shareBtn.innerHTML = '✓ ¡Enlace copiado!';
+        shareBtn.style.background = '#4CAF50';
+        
+        setTimeout(()=>{
+          shareBtn.innerHTML = '🔗 Copiar enlace';
+          shareBtn.style.background = '';
+        }, 2000);
+      } catch(err) {
+        // Fallback para navegadores antiguos
+        const input = document.createElement('input');
+        input.value = url;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        
+        shareBtn.innerHTML = '✓ ¡Enlace copiado!';
+        setTimeout(()=>{
+          shareBtn.innerHTML = '🔗 Copiar enlace';
+        }, 2000);
+      }
+    });
+    
+    return shareBtn;
+  }
+
+  // Abrir modal y llenar contenido
+  function openModal(post){
+    // Actualizar URL sin recargar la página
+    if(post.slug){
+      window.history.pushState({postSlug: post.slug}, '', `#${post.slug}`);
+    }
+    
+    modal.setAttribute('aria-hidden','false');
+    modalTitle.textContent = post.title;
+    modalDate.textContent = formatDate(post.date);
+    
+    // Renderizar contenido
+    renderContent(post);
+    
+    // Agregar botón de compartir si no existe
+    let shareBtn = modal.querySelector('.share-btn');
+    if(!shareBtn && post.slug){
+      shareBtn = createShareButton(post);
+      const modalHeader = modal.querySelector('.modal-header');
+      modalHeader.appendChild(shareBtn);
+    } else if(shareBtn && post.slug){
+      // Actualizar botón existente
+      const newShareBtn = createShareButton(post);
+      shareBtn.replaceWith(newShareBtn);
+    }
+    
+    // Imagen
     if(post.image){
       modalImage.src = post.image;
       modalImage.alt = post.title;
@@ -148,8 +196,10 @@
     } else {
       document.getElementById('modal-figure').classList.add('hidden');
     }
+    
     document.body.style.overflow = 'hidden';
-    // foco accesible
+    
+    // Foco accesible
     const closeBtn = modal.querySelector('.modal-close');
     closeBtn.focus();
   }
@@ -157,6 +207,9 @@
   function closeModal(){
     modal.setAttribute('aria-hidden','true');
     document.body.style.overflow = '';
+    
+    // Limpiar hash de la URL
+    window.history.pushState('', document.title, window.location.pathname);
   }
 
   // Aplicar filtro actual
@@ -166,6 +219,22 @@
       filtered = filtered.filter(p=>p.type === currentFilter);
     }
     render(filtered);
+  }
+
+  // Buscar post por slug
+  function findPostBySlug(slug){
+    return allPosts.find(p => p.slug === slug);
+  }
+
+  // Verificar si hay un hash en la URL al cargar
+  function checkHashOnLoad(){
+    const hash = window.location.hash.slice(1); // Quitar el #
+    if(hash){
+      const post = findPostBySlug(hash);
+      if(post){
+        openModal(post);
+      }
+    }
   }
 
   // Cargar posts.json
@@ -178,25 +247,26 @@
         if(Array.isArray(data.posts)){
           allPosts = data.posts.slice().sort((a,b)=> new Date(b.date) - new Date(a.date));
           applyFilter();
-          if(allPosts.length > 0) openModal(allPosts[0]);
+          checkHashOnLoad();
         }
       }catch(e){
         console.warn('embedded-posts presente pero no válido JSON:', e.message);
       }
     }
 
-    // Luego intentar obtener la versión real desde posts/posts.json y sobrescribir si es exitosa
+    // Luego intentar obtener la versión real desde posts/posts.json
     try{
       const res = await fetch(POSTS_JSON);
       if(!res.ok) throw new Error('No se pudo cargar posts.json');
       const data = await res.json();
       if(!Array.isArray(data.posts)) throw new Error('Estructura inválida en posts.json');
+      
       // Ordenar por fecha (desc) y actualizar vista
       allPosts = data.posts.slice().sort((a,b)=> new Date(b.date) - new Date(a.date));
       applyFilter();
-      if(allPosts.length > 0) openModal(allPosts[0]);
+      checkHashOnLoad();
     }catch(err){
-      // No mostrar el error al usuario si ya hay posts embebidos; loguear para depuración.
+      // No mostrar el error al usuario si ya hay posts embebidos
       if(!allPosts || allPosts.length === 0){
         postsList.innerHTML = `<p class="muted">Error cargando entradas: ${err.message}</p>`;
       }
@@ -214,12 +284,22 @@
     });
   });
 
-  // Eventos modal (cerrar al fondo o al boton)
+  // Eventos modal (cerrar al fondo o al botón)
   modal.addEventListener('click', (e)=>{
     if(e.target.matches('[data-close]')) closeModal();
   });
+  
   document.addEventListener('keydown', (e)=>{
     if(e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') closeModal();
+  });
+
+  // Manejar navegación con botones del navegador (atrás/adelante)
+  window.addEventListener('popstate', (e)=>{
+    if(modal.getAttribute('aria-hidden') === 'false'){
+      closeModal();
+    } else {
+      checkHashOnLoad();
+    }
   });
 
   // Inicializar
