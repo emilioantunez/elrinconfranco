@@ -4,6 +4,7 @@
     "id": 1,
     "title": "Cuando el corazón sonríe",
     "type": "relato",
+    "slug": "cuando-el-corazon-sonrie",
     "date": "2025-09-17",
     "excerpt": "Una conversación íntima que abre la puerta a la esperanza.",
     "content": [
@@ -23,6 +24,7 @@
     "id": 2,
     "title": "¡Feliz día de la primavera!",
     "type": "relato",
+    "slug": "feliz-dia-de-la-primavera",
     "date": "2025-09-17",
     "excerpt": "Un breve texto sobre flores, ciclos y amor propio.",
     "content": [
@@ -38,16 +40,19 @@
     "id": 3,
     "title": "Hoy estoy roto",
     "type": "relato",
+    "slug": "hoy-estoy-roto",
     "date": "2025-11-23",
     "excerpt": "Hoy me rompí, me hice añicos. Y no quiero recoger los pedazos...",
-    "content": "Hoy me rompí, me hice añicos. Y no quiero recoger los pedazos. Estoy cansado, podría decir que en realidad harto es como me siento. Y sobre sentir he escrito demasiado en esta perra vida. Ya no quiero sentir, querer, está sobrevalorado. ¿De qué vale el amor si no se te corresponde? ¿De qué vale si nadie siente lo mismo por mí? Pasan los años, las personas, y yo sigo solo. Hoy me parece que no tengo valor para nadie. Es una ilusión creer que algún día va a aparecer alguien que se imagine que soy el hombre de su vida. Es en vano, no es real. Hoy, sé que sobro, que molesto, que soy impertinente. Hoy, quiero llorar a gritos, ahogarme en mi propio llanto y ¿quién sabe? Quizá morirme... Estoy roto. Hoy, estoy roto. Y eso, a nadie le importa.",
+    "content": [
+      "Hoy me rompí, me hice añicos. Y no quiero recoger los pedazos. Estoy cansado, podría decir que en realidad harto es como me siento. Y sobre sentir he escrito demasiado en esta perra vida. Ya no quiero sentir, querer, está sobrevalorado. ¿De qué vale el amor si no se te corresponde? ¿De qué vale si nadie siente lo mismo por mí? Pasan los años, las personas, y yo sigo solo. Hoy me parece que no tengo valor para nadie. Es una ilusión creer que algún día va a aparecer alguien que se imagine que soy el hombre de su vida. Es en vano, no es real. Hoy, sé que sobro, que molesto, que soy impertinente. Hoy, quiero llorar a gritos, ahogarme en mi propio llanto y ¿quién sabe? Quizá morirme... Estoy roto. Hoy, estoy roto. Y eso, a nadie le importa."
+    ],
     "image": "images/hoy-estoy-roto.jpeg"
-  }
-  ,
+  },
   {
     "id": 4,
     "title": "El beso que nos debemos",
     "type": "poesia",
+    "slug": "el-beso-que-nos-debemos",
     "date": "2025-10-04",
     "excerpt": "Poema sobre el deseo y el beso pendiente.",
     "content": [
