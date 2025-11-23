@@ -1,0 +1,94 @@
+{
+"posts": [
+  {
+    "id": 1,
+    "title": "Cuando el corazón sonríe",
+    "type": "relato",
+    "date": "2025-09-17",
+    "excerpt": "Una conversación íntima que abre la puerta a la esperanza.",
+    "content": [
+      "—Gracias por invitarme a almorzar, Heiko —dijo Andrei, acomodándose en la silla—. Dijiste que tenías algo que contarme…",
+      "Suspiré y jugué con la servilleta, sin atreverme a mirarlo. No sabía cómo empezar sin sonar como un tonto.",
+      "—Es complicado —murmuré—. Creí que ya no podía sentir esto, ¿sabes? Que se me había roto algo por dentro y no tenía arreglo. Pero contigo... es diferente.",
+      "Andrei no dijo nada, solo me miró con esa calma suya que siempre me tranquilizaba. Como si tuviera todo el tiempo del mundo para escucharme.",
+      "Cuando te veo sonreír —continué, reuniendo valor—, algo se enciende dentro de mí. Como si hubiera estado viviendo a medias y de repente recordara lo que se siente estar vivo de verdad.",
+      "Por fin lo miré a los ojos. Vi algo cálido ahí, algo que me hizo pensar que tal vez no estaba loco por sentir todo esto.",
+      "Andrei se acercó un poco más. No hacía falta que dijera nada; su silencio me decía más que mil palabras. Me hizo recordar que había sufrido mucho antes, que había días en los que pensé que nunca volvería a ser feliz. Y ahí estaba él, sin juzgarme, ayudándome a creer que podía intentarlo de nuevo.",
+      "No sé cuánto tiempo nos quedamos así, pero sentí que algo importante estaba pasando entre nosotros. Algo que no necesitaba nombre todavía.",
+      "Me permití sentir el miedo y la esperanza al mismo tiempo. Por primera vez en años, decidí que quería ser feliz. Y cuando miré a Andrei, supe que él estaría conmigo, pasara lo que pasara."
+    ],
+    "image": "images/cuando-el-corazon-sonrie.png"
+  },
+  {
+    "id": 2,
+    "title": "¡Feliz día de la primavera!",
+    "type": "relato",
+    "date": "2025-09-17",
+    "excerpt": "Un breve texto sobre flores, ciclos y amor propio.",
+    "content": [
+      "Llegó otro 21 de septiembre, pero este es diferente. En este día me regalé mis propias flores amarillas, consciente de que, al menos por un tiempo, así será.",
+      "Elegí dos margaritas de piria: flores comunes, humildes, y a la vez hermosas en su sencillez perfecta. Como pequeños soles que brotan de la tierra, llevan en sus pétalos la promesa de que la belleza no necesita ornamentos para existir.",
+      "Hoy es un hermoso día de primavera porque te tengo presente, quizás no como hubiera soñado o siquiera imaginado, pero sí como lo merezco. Y esa certeza, dulce y serena, me colma de felicidad.",
+      "Las flores que me di hablan de amor propio, de ciclos que renacen, de la sabiduría de encontrar en lo simple la grandeza que buscamos.",
+      "¡Feliz día de la primavera para ti, para mí, para nosotros y para todo lo que florece cuando aprendemos a querernos!"
+    ],
+    "image": "images/margaritas.png"
+  },
+  {
+    "id": 3,
+    "title": "Hoy estoy roto",
+    "type": "relato",
+    "date": "2025-11-23",
+    "excerpt": "Hoy me rompí, me hice añicos. Y no quiero recoger los pedazos...",
+    "content": "Hoy me rompí, me hice añicos. Y no quiero recoger los pedazos. Estoy cansado, podría decir que en realidad harto es como me siento. Y sobre sentir he escrito demasiado en esta perra vida. Ya no quiero sentir, querer, está sobrevalorado. ¿De qué vale el amor si no se te corresponde? ¿De qué vale si nadie siente lo mismo por mí? Pasan los años, las personas, y yo sigo solo. Hoy me parece que no tengo valor para nadie. Es una ilusión creer que algún día va a aparecer alguien que se imagine que soy el hombre de su vida. Es en vano, no es real. Hoy, sé que sobro, que molesto, que soy impertinente. Hoy, quiero llorar a gritos, ahogarme en mi propio llanto y ¿quién sabe? Quizá morirme... Estoy roto. Hoy, estoy roto. Y eso, a nadie le importa.",
+    "image": "images/hoy-estoy-roto.jpeg"
+  }
+  ,
+  {
+    "id": 4,
+    "title": "El beso que nos debemos",
+    "type": "poesia",
+    "date": "2025-10-04",
+    "excerpt": "Poema sobre el deseo y el beso pendiente.",
+    "content": [
+      [
+        "Si me pides un beso, no me voy a negar.",
+        "Si te atreves, te lo daré muy lento,",
+        "tan lento que rogarás por más ritmo,",
+        "y entonces te entregaré el más cálido y húmedo ósculo.",
+        "Pero si me lo robas, no sé si pueda resistirme."
+      ],
+      [
+        "Dime, ¿te provoca mi boca",
+        "como a mí me provocan tus labios?",
+        "No puedo negar que los tuyos me generan ganas,",
+        "ganas de rozarlos con los míos,",
+        "de beber de ellos la miel, ese néctar oculto",
+        "del que quiero embriagarme."
+      ],
+      [
+        "Deja de mirarme así, angelito,",
+        "porque entonces entenderé que me deseas.",
+        "Y si me vuelves a enviar besos,",
+        "sabré que hay algo más que amistad,",
+        "un sentimiento que solo se tiene",
+        "por alguien a quien se ama."
+      ],
+      [
+        "De ser así, manifiéstalo, permítete sentir.",
+        "Debe fluir como el agua cuando la dejas correr,",
+        "natural, sin resistencia.",
+        "Ven, acércate, necesito que me mires",
+        "a los ojos, sin decir nada,",
+        "porque en silencio es cuando uno sabe",
+        "si hay verdaderas ganas de besar."
+      ],
+      [
+        "Entonces será el momento",
+        "de darnos este beso que ya nos debemos."
+      ]
+    ],
+    "image": "images/el-beso-que-nos-debemos.png"
+  }
+]
+}

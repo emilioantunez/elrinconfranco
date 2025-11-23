@@ -1,0 +1,149 @@
+<!--
+  Blog literario moderno y responsive
+  - Archivo: index.html (en la raíz) preparado para GitHub Pages
+  - Usa HTML5 semántico, Google Fonts (Lora, Open Sans), CSS3 y JS vanilla
+  - Cargar contenidos desde posts/posts.json
+-->
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Emilio Antúnez">
+  <meta name="description" content="El Rincón Franco — relatos y poesía. Un blog literario con diseño moderno y responsive.">
+  <meta name="keywords" content="relatos, poesía, blog literario, literatura">
+
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="El Rincón Franco — Relatos y Poesía">
+  <meta property="og:description" content="Relatos y poesía contemporánea. Nuevas entradas cada semana.">
+  <meta property="og:url" content="https://emilioantunez.github.io/elrinconfranco/">
+  <meta property="og:site_name" content="El Rincón Franco">
+  <meta property="og:image" content="images/og-image.jpg">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <title>El Rincón Franco — Relatos y Poesía</title>
+
+  <!-- Fuentes solicitadas: preconnect + carga de Goldman, Oswald y Roboto -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Oswald:wght@200;300;400;500;600;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,700;1,100;1,300;1,400;1,700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+  <meta name="theme-color" content="#F8F3EE">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-grid">
+      <div>
+        <a class="brand" href="/">
+          <img src="images/franco.png" alt="El Rincón Franco" class="brand-img">
+        </a>
+        <p class="tagline">Literatura desde mi verdad</p>
+      </div>
+      <nav class="controls">
+        <div class="filters" role="tablist" aria-label="Filtrar por tipo">
+          <button class="filter-btn active" data-filter="all">Todos</button>
+          <button class="filter-btn" data-filter="relato">Relatos</button>
+          <button class="filter-btn" data-filter="poesia">Poesía</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="posts-list" class="posts-grid" aria-live="polite">
+      <!-- Las tarjetas se insertan dinámicamente aquí por JS -->
+    </section>
+  </main>
+
+  <!-- Modal / sección expandible para leer contenido completo -->
+  <div id="post-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title">
+    <div class="modal-backdrop" data-close></div>
+    <article class="modal-content">
+      <button class="modal-close" aria-label="Cerrar" data-close>&times;</button>
+      <header class="modal-header">
+        <h2 id="modal-title"></h2>
+        <time id="modal-date"></time>
+      </header>
+      <figure id="modal-figure" class="modal-figure"><img src="" alt="" id="modal-image"></figure>
+      <div id="modal-body" class="modal-body"></div>
+    </article>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <p>© 2025 El Rincón Franco — Hecho con cuidado literario.</p>
+    </div>
+  </footer>
+
+  <!-- Respaldo local de posts: permite ver entradas sin servidor (fallback cuando fetch falla) -->
+  <script id="embedded-posts" type="application/json">
+{
+"posts": [
+  {
+    "id": 1,
+    "title": "Cuando el corazón sonríe",
+    "type": "relato",
+    "date": "2025-09-17",
+    "excerpt": "Una conversación íntima que abre la puerta a la esperanza.",
+    "content": [
+      "—Gracias por invitarme a almorzar, Heiko —dijo Andrei, acomodándose en la silla—. Dijiste que tenías algo que contarme…",
+      "Suspiré y jugué con la servilleta, sin atreverme a mirarlo. No sabía cómo empezar sin sonar como un tonto.",
+      "—Es complicado —murmuré—. Creí que ya no podía sentir esto, ¿sabes? Que se me había roto algo por dentro y no tenía arreglo. Pero contigo... es diferente.",
+      "Andrei no dijo nada, solo me miró con esa calma suya que siempre me tranquilizaba. Como si tuviera todo el tiempo del mundo para escucharme.",
+      "Cuando te veo sonreír —continué, reuniendo valor—, algo se enciende dentro de mí. Como si hubiera estado viviendo a medias y de repente recordara lo que se siente estar vivo de verdad.",
+      "Por fin lo miré a los ojos. Vi algo cálido ahí, algo que me hizo pensar que tal vez no estaba loco por sentir todo esto.",
+      "Andrei se acercó un poco más. No hacía falta que dijera nada; su silencio me decía más que mil palabras. Me hizo recordar que había sufrido mucho antes, que había días en los que pensé que nunca volvería a ser feliz. Y ahí estaba él, sin juzgarme, ayudándome a creer que podía intentarlo de nuevo.",
+      "No sé cuánto tiempo nos quedamos así, pero sentí que algo importante estaba pasando entre nosotros. Algo que no necesitaba nombre todavía.",
+      "Me permití sentir el miedo y la esperanza al mismo tiempo. Por primera vez en años, decidí que quería ser feliz. Y cuando miré a Andrei, supe que él estaría conmigo, pasara lo que pasara."
+    ],
+    "image": "images/cuando-el-corazon-sonrie.png"
+  },
+  {
+    "id": 2,
+    "title": "¡Feliz día de la primavera!",
+    "type": "relato",
+    "date": "2025-09-17",
+    "excerpt": "Un breve texto sobre flores, ciclos y amor propio.",
+    "content": [
+      "Llegó otro 21 de septiembre, pero este es diferente. En este día me regalé mis propias flores amarillas, consciente de que, al menos por un tiempo, así será.",
+      "Elegí dos margaritas de piria: flores comunes, humildes, y a la vez hermosas en su sencillez perfecta. Como pequeños soles que brotan de la tierra, llevan en sus pétalos la promesa de que la belleza no necesita ornamentos para existir.",
+      "Hoy es un hermoso día de primavera porque te tengo presente, quizás no como hubiera soñado o siquiera imaginado, pero sí como lo merezco. Y esa certeza, dulce y serena, me colma de felicidad.",
+      "Las flores que me di hablan de amor propio, de ciclos que renacen, de la sabiduría de encontrar en lo simple la grandeza que buscamos.",
+      "¡Feliz día de la primavera para ti, para mí, para nosotros y para todo lo que florece cuando aprendemos a querernos!"
+    ],
+    "image": "images/margaritas.png"
+  },
+  {
+    "id": 3,
+    "title": "Hoy estoy roto",
+    "type": "relato",
+    "date": "2025-11-23",
+    "excerpt": "Hoy me rompí, me hice añicos. Y no quiero recoger los pedazos...",
+    "content": "Hoy me rompí, me hice añicos. Y no quiero recoger los pedazos. Estoy cansado, podría decir que en realidad harto es como me siento. Y sobre sentir he escrito demasiado en esta perra vida. Ya no quiero sentir, querer, está sobrevalorado. ¿De qué vale el amor si no se te corresponde? ¿De qué vale si nadie siente lo mismo por mí? Pasan los años, las personas, y yo sigo solo. Hoy me parece que no tengo valor para nadie. Es una ilusión creer que algún día va a aparecer alguien que se imagine que soy el hombre de su vida. Es en vano, no es real. Hoy, sé que sobro, que molesto, que soy impertinente. Hoy, quiero llorar a gritos, ahogarme en mi propio llanto y ¿quién sabe? Quizá morirme... Estoy roto. Hoy, estoy roto. Y eso, a nadie le importa.",
+    "image": "images/hoy-estoy-roto.jpeg"
+  },
+  {
+    "id": 4,
+    "title": "El beso que nos debemos",
+    "type": "poesia",
+    "date": "2025-10-04",
+    "excerpt": "Poema sobre el deseo y el beso pendiente.",
+    "content": [
+      "Si me pides un beso, no me voy a negar.\nSi te atreves, te lo daré muy lento,\ntan lento que rogarás por más ritmo,\ny entonces te entregaré el más cálido y húmedo ósculo.\nPero si me lo robas, no sé si pueda resistirme.",
+      "Dime, ¿te provoca mi boca\ncomo a mí me provocan tus labios?\nNo puedo negar que los tuyos me generan ganas,\nganas de rozarlos con los míos,\nde beber de ellos la miel, ese néctar oculto\ndel que quiero embriagarme.",
+      "Deja de mirarme así, angelito,\nporque entonces entenderé que me deseas.\nY si me vuelves a enviar besos,\nsabré que hay algo más que amistad,\nun sentimiento que solo se tiene\npor alguien a quien se ama.",
+      "De ser así, manifiéstalo, permítete sentir.\nDebe fluir como el agua cuando la dejas correr,\nnatural, sin resistencia.\nVen, acércate, necesito que me mires\na los ojos, sin decir nada,\nporque en silencio es cuando uno sabe\nsi hay verdaderas ganas de besar.",
+      "Entonces será el momento\nde darnos este beso que ya nos debemos."
+    ],
+    "image": "images/el-beso-que-nos-debemos.png"
+  }
+]
+}
+  </script>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>
