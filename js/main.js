@@ -1,10 +1,11 @@
 /*
-  main.js - Versión actualizada con links compartibles
+  main.js - Versión actualizada con links compartibles y Markdown
   - Carga posts desde posts/posts.json
   - Renderiza tarjetas, aplica filtros y abre modal con contenido completo
   - URLs únicas con hash (#slug) para compartir posts específicos
   - Botón "Copiar enlace" en cada post
   - Soporte para arrays de estrofas en poesía
+  - Procesamiento de Markdown básico (## títulos, **negrita**)
   - Ordena por fecha (más recientes primero)
 */
 (function(){
@@ -38,6 +39,14 @@
       .replace(/>/g,'&gt;')
       .replace(/"/g,'&quot;')
       .replace(/'/g,'&#39;');
+  }
+
+  // Procesa Markdown básico: ## para h2, ** para negrita, * para cursiva
+  function parseMarkdown(text){
+    return text
+      .replace(/^## (.+)$/gm, '<h2>$1</h2>')  // ## Título
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')  // **negrita**
+      .replace(/\*(.+?)\*/g, '<em>$1</em>');  // *cursiva*
   }
 
   // Crea tarjeta de post
@@ -110,16 +119,16 @@
           stanza.innerHTML = item.map(line => escapeHTML(line)).join('<br>');
           modalBody.appendChild(stanza);
         } else {
-          // Es un párrafo simple
-          const para = document.createElement('p');
-          para.textContent = item;
+          // Es un párrafo simple - procesar Markdown
+          const para = document.createElement('div');
+          para.innerHTML = parseMarkdown(item);
           modalBody.appendChild(para);
         }
       });
     } else if(typeof post.content === 'string'){
       // Contenido como string simple
-      const para = document.createElement('p');
-      para.textContent = post.content;
+      const para = document.createElement('div');
+      para.innerHTML = parseMarkdown(post.content);
       modalBody.appendChild(para);
     }
   }
