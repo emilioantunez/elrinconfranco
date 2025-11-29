@@ -50,9 +50,9 @@ body{
 .tagline{margin:0;color:var(--muted);font-size:0.9rem}
 
 /* Imagen del título (marca) */
-.brand-img{display:block;height:46px;width:auto;object-fit:contain}
+.brand-img{display:block;height:80px;width:auto;object-fit:contain}
 @media(min-width:768px){
-  .brand-img{height:56px}
+  .brand-img{height:100px}
 }
 
 .filters{display:flex;gap:0.5rem}
