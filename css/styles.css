@@ -98,6 +98,16 @@ body{
 /* Footer */
 .site-footer{padding:2rem 0;color:var(--muted)}
 .footer-grid{display:flex;justify-content:space-between;gap:1rem}
+.site-footer a{color:var(--accent);text-decoration:none;transition:color .2s}
+.site-footer a:hover{color:var(--accent-dark);text-decoration:underline}
+
+/* Responsive: tablet */
+@media(min-width:768px){
+  .posts-grid{grid-template-columns:repeat(2,1fr);gap:1.25rem}
+  .post-media{height:200px}
+}
+
+/* ... resto del código ... */
 
 /* Responsive: tablet */
 @media(min-width:768px){
