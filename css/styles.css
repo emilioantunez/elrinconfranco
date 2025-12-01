@@ -101,6 +101,109 @@ body{
 .site-footer a{color:var(--accent);text-decoration:none;transition:color .2s}
 .site-footer a:hover{color:var(--accent-dark);text-decoration:underline}
 
+/* Footer */
+.site-footer {
+  padding: 2rem 0;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer-copyright {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* Redes sociales */
+.social-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.social-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.social-links a:hover {
+  background: var(--accent-dark);
+  transform: translateY(-3px) scale(1.1);
+  box-shadow: var(--shadow);
+}
+
+.social-links a svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Colores específicos por red social */
+.social-links a[aria-label="BlueSky"] {
+  background: #0285FF;
+}
+
+.social-links a[aria-label="BlueSky"]:hover {
+  background: #0066CC;
+}
+
+.social-links a[aria-label="Instagram"] {
+  background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF, #515BD4);
+}
+
+.social-links a[aria-label="Instagram"]:hover {
+  background: linear-gradient(45deg, #DD2A7B, #8134AF, #515BD4, #F58529);
+}
+
+.social-links a[aria-label="Mastodon"] {
+  background: #6364FF;
+}
+
+.social-links a[aria-label="Mastodon"]:hover {
+  background: #4B4CDB;
+}
+
+.social-links a[aria-label="Threads"] {
+  background: #000000;
+}
+
+.social-links a[aria-label="Threads"]:hover {
+  background: #333333;
+}
+
+.social-links a[aria-label="X (Twitter)"] {
+  background: #000000;
+}
+
+.social-links a[aria-label="X (Twitter)"]:hover {
+  background: #333333;
+}
+
+/* Responsive para desktop */
+@media (min-width: 768px) {
+  .footer-content {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+
+
 /* Responsive: tablet */
 @media(min-width:768px){
   .posts-grid{grid-template-columns:repeat(2,1fr);gap:1.25rem}
