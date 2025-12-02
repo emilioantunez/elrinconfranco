@@ -1,11 +1,12 @@
 /*
-  main.js - Versión actualizada con links compartibles y Markdown
+  main.js - Versión con Facebook Comments
   - Carga posts desde posts/posts.json
   - Renderiza tarjetas, aplica filtros y abre modal con contenido completo
   - URLs únicas con hash (#slug) para compartir posts específicos
   - Botón "Copiar enlace" en cada post
   - Soporte para arrays de estrofas en poesía
   - Procesamiento de Markdown básico (## títulos, **negrita**)
+  - Integración con Facebook Comments
   - Ordena por fecha (más recientes primero)
 */
 (function(){
@@ -171,8 +172,25 @@
     return shareBtn;
   }
 
+  // Recargar widget de Facebook Comments
+  function loadFacebookComments(postUrl){
+    const fbComments = document.querySelector('.fb-comments');
+    if(fbComments){
+      // Actualizar el atributo data-href con la URL del post
+      fbComments.setAttribute('data-href', postUrl);
+      
+      // Reparsear el widget de Facebook si el SDK está disponible
+      if(typeof FB !== 'undefined'){
+        FB.XFBML.parse();
+      }
+    }
+  }
+
   // Abrir modal y llenar contenido
   function openModal(post){
+    // Construir URL completa del post
+    const postUrl = `${window.location.origin}${window.location.pathname}#${post.slug}`;
+    
     // Actualizar URL sin recargar la página
     if(post.slug){
       window.history.pushState({postSlug: post.slug}, '', `#${post.slug}`);
@@ -205,6 +223,9 @@
     } else {
       document.getElementById('modal-figure').classList.add('hidden');
     }
+    
+    // Cargar comentarios de Facebook para este post específico
+    loadFacebookComments(postUrl);
     
     document.body.style.overflow = 'hidden';
     

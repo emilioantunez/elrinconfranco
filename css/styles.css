@@ -1,8 +1,9 @@
 /*
   styles.css
   - Mobile-first responsive styles
-  - Tipografía: Lora (títulos), Open Sans (texto)
+  - Tipografía: Goldman (marca), Oswald (títulos), Roboto (texto)
   - Colores cálidos, espaciado generoso y transiciones sutiles
+  - Estilos para sección de comentarios de Facebook
 */
 
 :root{
@@ -85,9 +86,9 @@ body{
 .modal-body{white-space:pre-wrap;color:var(--color-1);font-size:1rem;line-height:1.75}
 
 @media(min-width:768px){
-  .modal-content{flex-direction:row;align-items:flex-start}
+  .modal-content{flex-direction:row;align-items:flex-start;flex-wrap:wrap}
   .modal-figure{flex:0 0 180px;margin-right:1rem;align-self:flex-start;padding:0}
-  .modal-body{flex:1}
+  .modal-body{flex:1;min-width:0}
 }
 
 @media(max-width:479px){
@@ -95,11 +96,29 @@ body{
   .modal-content{padding:1rem}
 }
 
-/* Footer */
-.site-footer{padding:2rem 0;color:var(--muted)}
-.footer-grid{display:flex;justify-content:space-between;gap:1rem}
-.site-footer a{color:var(--accent);text-decoration:none;transition:color .2s}
-.site-footer a:hover{color:var(--accent-dark);text-decoration:underline}
+/* Sección de comentarios */
+.comments-section{
+  width:100%;
+  margin-top:2rem;
+  padding-top:2rem;
+  border-top:2px solid #e0e0e0;
+}
+
+.comments-title{
+  font-family:'Oswald',sans-serif;
+  font-size:1.5rem;
+  color:var(--color-1);
+  margin:0 0 1rem 0;
+  font-weight:600;
+}
+
+.fb-comments{
+  width:100%!important;
+}
+
+.fb-comments iframe{
+  width:100%!important;
+}
 
 /* Footer */
 .site-footer {
@@ -201,16 +220,6 @@ body{
     align-items: center;
   }
 }
-
-
-
-/* Responsive: tablet */
-@media(min-width:768px){
-  .posts-grid{grid-template-columns:repeat(2,1fr);gap:1.25rem}
-  .post-media{height:200px}
-}
-
-/* ... resto del código ... */
 
 /* Responsive: tablet */
 @media(min-width:768px){
