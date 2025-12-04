@@ -1,13 +1,8 @@
 /*
-  main.js - Versión con Facebook Comments
-  - Carga posts desde posts/posts.json
-  - Renderiza tarjetas, aplica filtros y abre modal con contenido completo
-  - URLs únicas con hash (#slug) para compartir posts específicos
-  - Botón "Copiar enlace" en cada post
-  - Soporte para arrays de estrofas en poesía
-  - Procesamiento de Markdown básico (## títulos, **negrita**)
-  - Integración con Facebook Comments
-  - Ordena por fecha (más recientes primero)
+  main.js - Sistema híbrido
+  - Carga posts desde posts.json (posts antiguos)
+  - Carga posts individuales desde posts/*.json (posts nuevos)
+  - Combina ambas fuentes y renderiza todo junto
 */
 (function(){
   'use strict'
@@ -24,7 +19,60 @@
   let allPosts = [];
   let currentFilter = 'all';
 
-  // Formatea fecha ISO a un formato legible
+  // Actualizar meta tags para compartir en redes sociales
+  function updateMetaTags(post){
+    const baseUrl = 'https://emilioantunez.github.io/elrinconfranco';
+    const postUrl = `${baseUrl}/#${post.slug}`;
+    const imageUrl = `${baseUrl}/${post.image}`;
+    
+    const updateOrCreateMeta = (property, content, isProperty = true) => {
+      const attr = isProperty ? 'property' : 'name';
+      let meta = document.querySelector(`meta[${attr}="${property}"]`);
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.setAttribute(attr, property);
+        document.head.appendChild(meta);
+      }
+      meta.setAttribute('content', content);
+    };
+    
+    updateOrCreateMeta('og:title', `${post.title} - El Rincón Franco`);
+    updateOrCreateMeta('og:description', post.excerpt);
+    updateOrCreateMeta('og:url', postUrl);
+    updateOrCreateMeta('og:image', imageUrl);
+    updateOrCreateMeta('og:type', 'article');
+    
+    updateOrCreateMeta('twitter:card', 'summary_large_image', false);
+    updateOrCreateMeta('twitter:title', post.title, false);
+    updateOrCreateMeta('twitter:description', post.excerpt, false);
+    updateOrCreateMeta('twitter:image', imageUrl, false);
+    
+    document.title = `${post.title} - El Rincón Franco`;
+  }
+
+  function restoreDefaultMetaTags(){
+    const baseUrl = 'https://emilioantunez.github.io/elrinconfranco';
+    
+    const updateOrCreateMeta = (property, content, isProperty = true) => {
+      const attr = isProperty ? 'property' : 'name';
+      let meta = document.querySelector(`meta[${attr}="${property}"]`);
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.setAttribute(attr, property);
+        document.head.appendChild(meta);
+      }
+      meta.setAttribute('content', content);
+    };
+    
+    updateOrCreateMeta('og:title', 'El Rincón Franco — Relatos y Poesía');
+    updateOrCreateMeta('og:description', 'Literatura desde mi verdad. Relatos y poesía del corazón.');
+    updateOrCreateMeta('og:url', baseUrl);
+    updateOrCreateMeta('og:image', `${baseUrl}/images/og-image.jpg`);
+    updateOrCreateMeta('og:type', 'website');
+    
+    document.title = 'El Rincón Franco — Relatos y Poesía';
+  }
+
   function formatDate(iso){
     try{
       const d = new Date(iso);
@@ -32,7 +80,6 @@
     }catch(e){return iso}
   }
 
-  // Escapa HTML para prevenir XSS
   function escapeHTML(s){
     return String(s)
       .replace(/&/g,'&amp;')
@@ -42,20 +89,17 @@
       .replace(/'/g,'&#39;');
   }
 
-  // Procesa Markdown básico: ## para h2, ** para negrita, * para cursiva
   function parseMarkdown(text){
     return text
-      .replace(/^## (.+)$/gm, '<h2>$1</h2>')  // ## Título
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')  // **negrita**
-      .replace(/\*(.+?)\*/g, '<em>$1</em>');  // *cursiva*
+      .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>');
   }
 
-  // Crea tarjeta de post
   function createCard(post){
     const card = document.createElement('article');
     card.className = 'post-card';
 
-    // Imagen
     if(post.image){
       const img = document.createElement('img');
       img.className = 'post-media';
@@ -94,7 +138,6 @@
     return card;
   }
 
-  // Renderiza lista según filtro
   function render(posts){
     postsList.innerHTML = '';
     if(posts.length===0){
@@ -106,35 +149,29 @@
     });
   }
 
-  // Renderiza el contenido del post en el modal
   function renderContent(post){
     modalBody.innerHTML = '';
     
     if(Array.isArray(post.content)){
-      // Cada elemento puede ser una string (párrafo) o un array de líneas (estrofa)
       post.content.forEach(item => {
         if(Array.isArray(item)){
-          // Es una estrofa (array de versos)
           const stanza = document.createElement('p');
           stanza.className = 'poem-stanza';
           stanza.innerHTML = item.map(line => escapeHTML(line)).join('<br>');
           modalBody.appendChild(stanza);
         } else {
-          // Es un párrafo simple - procesar Markdown
           const para = document.createElement('div');
           para.innerHTML = parseMarkdown(item);
           modalBody.appendChild(para);
         }
       });
     } else if(typeof post.content === 'string'){
-      // Contenido como string simple
       const para = document.createElement('div');
       para.innerHTML = parseMarkdown(post.content);
       modalBody.appendChild(para);
     }
   }
 
-  // Crea el botón de compartir
   function createShareButton(post){
     const shareBtn = document.createElement('button');
     shareBtn.className = 'share-btn';
@@ -154,7 +191,6 @@
           shareBtn.style.background = '';
         }, 2000);
       } catch(err) {
-        // Fallback para navegadores antiguos
         const input = document.createElement('input');
         input.value = url;
         document.body.appendChild(input);
@@ -172,50 +208,41 @@
     return shareBtn;
   }
 
-  // Recargar widget de Facebook Comments
   function loadFacebookComments(postUrl){
     const fbComments = document.querySelector('.fb-comments');
     if(fbComments){
-      // Actualizar el atributo data-href con la URL del post
       fbComments.setAttribute('data-href', postUrl);
-      
-      // Reparsear el widget de Facebook si el SDK está disponible
       if(typeof FB !== 'undefined'){
         FB.XFBML.parse();
       }
     }
   }
 
-  // Abrir modal y llenar contenido
   function openModal(post){
-    // Construir URL completa del post
     const postUrl = `${window.location.origin}${window.location.pathname}#${post.slug}`;
     
-    // Actualizar URL sin recargar la página
     if(post.slug){
       window.history.pushState({postSlug: post.slug}, '', `#${post.slug}`);
     }
+    
+    updateMetaTags(post);
     
     modal.setAttribute('aria-hidden','false');
     modalTitle.textContent = post.title;
     modalDate.textContent = formatDate(post.date);
     
-    // Renderizar contenido
     renderContent(post);
     
-    // Agregar botón de compartir si no existe
     let shareBtn = modal.querySelector('.share-btn');
     if(!shareBtn && post.slug){
       shareBtn = createShareButton(post);
       const modalHeader = modal.querySelector('.modal-header');
       modalHeader.appendChild(shareBtn);
     } else if(shareBtn && post.slug){
-      // Actualizar botón existente
       const newShareBtn = createShareButton(post);
       shareBtn.replaceWith(newShareBtn);
     }
     
-    // Imagen
     if(post.image){
       modalImage.src = post.image;
       modalImage.alt = post.title;
@@ -224,12 +251,10 @@
       document.getElementById('modal-figure').classList.add('hidden');
     }
     
-    // Cargar comentarios de Facebook para este post específico
     loadFacebookComments(postUrl);
     
     document.body.style.overflow = 'hidden';
     
-    // Foco accesible
     const closeBtn = modal.querySelector('.modal-close');
     closeBtn.focus();
   }
@@ -238,11 +263,11 @@
     modal.setAttribute('aria-hidden','true');
     document.body.style.overflow = '';
     
-    // Limpiar hash de la URL
+    restoreDefaultMetaTags();
+    
     window.history.pushState('', document.title, window.location.pathname);
   }
 
-  // Aplicar filtro actual
   function applyFilter(){
     let filtered = allPosts.slice();
     if(currentFilter !== 'all'){
@@ -251,14 +276,12 @@
     render(filtered);
   }
 
-  // Buscar post por slug
   function findPostBySlug(slug){
     return allPosts.find(p => p.slug === slug);
   }
 
-  // Verificar si hay un hash en la URL al cargar
   function checkHashOnLoad(){
-    const hash = window.location.hash.slice(1); // Quitar el #
+    const hash = window.location.hash.slice(1);
     if(hash){
       const post = findPostBySlug(hash);
       if(post){
@@ -267,44 +290,82 @@
     }
   }
 
-  // Cargar posts.json
+  // Cargar posts individuales desde posts/*.json
+  async function loadIndividualPosts(){
+    const individualPosts = [];
+    
+    // Lista de archivos individuales conocidos (puedes mantener esto actualizado manualmente
+    // o usar un archivo index.json que liste los posts individuales)
+    const individualFiles = [
+      // Aquí se agregarán automáticamente cuando uses el generador
+      // Ejemplo: 'mi-nuevo-post.json'
+    ];
+    
+    // Intentar cargar un archivo índice si existe
+    try {
+      const indexRes = await fetch('posts/individual-posts-index.json');
+      if(indexRes.ok){
+        const indexData = await indexRes.json();
+        individualFiles.push(...(indexData.posts || []));
+      }
+    } catch(e) {
+      console.log('No se encontró índice de posts individuales');
+    }
+    
+    // Cargar cada post individual
+    for(const filename of individualFiles){
+      try {
+        const res = await fetch(`posts/${filename}`);
+        if(res.ok){
+          const postData = await res.json();
+          individualPosts.push(postData);
+        }
+      } catch(err) {
+        console.warn(`No se pudo cargar post individual: ${filename}`);
+      }
+    }
+    
+    return individualPosts;
+  }
+
   async function loadPosts(){
-    // Primero intentar usar los posts embebidos en el HTML (fallback offline)
+    // Primero cargar posts embebidos como fallback
     const embedded = document.getElementById('embedded-posts');
     if(embedded){
       try{
         const data = JSON.parse(embedded.textContent);
         if(Array.isArray(data.posts)){
-          allPosts = data.posts.slice().sort((a,b)=> new Date(b.date) - new Date(a.date));
-          applyFilter();
-          checkHashOnLoad();
+          allPosts = data.posts.slice();
         }
       }catch(e){
         console.warn('embedded-posts presente pero no válido JSON:', e.message);
       }
     }
 
-    // Luego intentar obtener la versión real desde posts/posts.json
+    // Cargar posts desde posts.json
     try{
       const res = await fetch(POSTS_JSON);
-      if(!res.ok) throw new Error('No se pudo cargar posts.json');
-      const data = await res.json();
-      if(!Array.isArray(data.posts)) throw new Error('Estructura inválida en posts.json');
-      
-      // Ordenar por fecha (desc) y actualizar vista
-      allPosts = data.posts.slice().sort((a,b)=> new Date(b.date) - new Date(a.date));
-      applyFilter();
-      checkHashOnLoad();
-    }catch(err){
-      // No mostrar el error al usuario si ya hay posts embebidos
-      if(!allPosts || allPosts.length === 0){
-        postsList.innerHTML = `<p class="muted">Error cargando entradas: ${err.message}</p>`;
+      if(res.ok){
+        const data = await res.json();
+        if(Array.isArray(data.posts)){
+          allPosts = data.posts.slice();
+        }
       }
-      console.warn('No se pudo sincronizar posts desde posts.json:', err.message);
+    }catch(err){
+      console.warn('No se pudo cargar posts.json:', err.message);
     }
+    
+    // Cargar posts individuales y combinarlos
+    const individualPosts = await loadIndividualPosts();
+    allPosts = [...allPosts, ...individualPosts];
+    
+    // Ordenar por fecha (más recientes primero)
+    allPosts.sort((a,b)=> new Date(b.date) - new Date(a.date));
+    
+    applyFilter();
+    checkHashOnLoad();
   }
 
-  // Eventos filtros
   filterBtns.forEach(btn=>{
     btn.addEventListener('click',()=>{
       filterBtns.forEach(b=>b.classList.remove('active'));
@@ -314,7 +375,6 @@
     });
   });
 
-  // Eventos modal (cerrar al fondo o al botón)
   modal.addEventListener('click', (e)=>{
     if(e.target.matches('[data-close]')) closeModal();
   });
@@ -323,7 +383,6 @@
     if(e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') closeModal();
   });
 
-  // Manejar navegación con botones del navegador (atrás/adelante)
   window.addEventListener('popstate', (e)=>{
     if(modal.getAttribute('aria-hidden') === 'false'){
       closeModal();
@@ -332,7 +391,6 @@
     }
   });
 
-  // Inicializar
   document.addEventListener('DOMContentLoaded', ()=>{
     loadPosts();
   });
