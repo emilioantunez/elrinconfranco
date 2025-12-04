@@ -85,6 +85,15 @@ body{
 .modal-figure img{width:100%;max-width:180px;height:auto;border-radius:6px;margin:0.6rem 0;object-fit:cover}
 .modal-body{white-space:pre-wrap;color:var(--color-1);font-size:1rem;line-height:1.75}
 
+/* Espaciado entre párrafos en el modal */
+.modal-body > div {
+  margin-bottom: 1.5rem;
+}
+
+.modal-body > div:last-child {
+  margin-bottom: 0;
+}
+
 @media(min-width:768px){
   .modal-content{flex-direction:row;align-items:flex-start;flex-wrap:wrap}
   .modal-figure{flex:0 0 180px;margin-right:1rem;align-self:flex-start;padding:0}
