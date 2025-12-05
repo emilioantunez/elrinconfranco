@@ -36,6 +36,131 @@
 
   <link rel="stylesheet" href="css/styles.css">
   <meta name="theme-color" content="#F8F3EE">
+<!-- AGREGAR ESTO EN EL <head> de index.html, ANTES de cerrar </head> -->
+
+<!-- OneSignal SDK -->
+
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+
+<script>
+
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+
+  OneSignalDeferred.push(async function(OneSignal) {
+
+    await OneSignal.init({
+
+      appId: "ce9ebbb6-8ed4-41e0-aaae-685fcefe037f", // ⬅️ REEMPLAZAR con tu App ID real
+
+      allowLocalhostAsSecureOrigin: true, // Permite testing local
+
+    });
+
+    
+
+    // Actualizar el estado del botón de seguir
+
+    updateFollowButton();
+
+    
+
+    // Escuchar cambios en el estado de suscripción
+
+    OneSignal.User.PushSubscription.addEventListener('change', function(event) {
+
+      updateFollowButton();
+
+    });
+
+  });
+
+  
+
+  async function updateFollowButton() {
+
+    const btn = document.getElementById('follow-btn');
+
+    if (!btn) return;
+
+    
+
+    const isPushSupported = OneSignal.Notifications.isPushSupported();
+
+    if (!isPushSupported) {
+
+      btn.innerHTML = '🔔 Notificaciones no disponibles';
+
+      btn.disabled = true;
+
+      return;
+
+    }
+
+    
+
+    const permission = OneSignal.Notifications.permission;
+
+    const isSubscribed = permission === 'granted';
+
+    
+
+    if (isSubscribed) {
+
+      btn.innerHTML = '✓ Siguiendo';
+
+      btn.classList.add('following');
+
+    } else if (permission === 'denied') {
+
+      btn.innerHTML = '🔕 Notificaciones bloqueadas';
+
+      btn.disabled = true;
+
+    } else {
+
+      btn.innerHTML = '🔔 Seguir Blog';
+
+      btn.classList.remove('following');
+
+    }
+
+  }
+
+  
+
+  async function toggleFollow() {
+
+    const permission = OneSignal.Notifications.permission;
+
+    
+
+    if (permission === 'default') {
+
+      // Solicitar permiso
+
+      await OneSignal.Slidedown.promptPush();
+
+    } else if (permission === 'granted') {
+
+      // Mostrar opciones para dejar de seguir
+
+      const unsubscribe = confirm('¿Dejar de recibir notificaciones de nuevos posts?');
+
+      if (unsubscribe) {
+
+        await OneSignal.User.PushSubscription.optOut();
+
+      }
+
+    }
+
+    
+
+    updateFollowButton();
+
+  }
+
+</script>
 </head>
 <body>
   <!-- SDK de Facebook -->
