@@ -42,23 +42,30 @@
   <div id="fb-root"></div>
   <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v18.0&appId=TU_FACEBOOK_APP_ID" nonce="RANDOM_NONCE"></script>
 
-  <header class="site-header">
-    <div class="container header-grid">
-      <div>
-        <a class="brand" href="https://emilioantunez.github.io/elrinconfranco/">
-          <img src="images/franco.png" alt="El Rincón Franco" class="brand-img">
-        </a>
-        <p class="tagline">Literatura desde mi verdad</p>
-      </div>
-      <nav class="controls">
-        <div class="filters" role="tablist" aria-label="Filtrar por tipo">
-          <button class="filter-btn active" data-filter="all">Todos</button>
-          <button class="filter-btn" data-filter="relato">Relatos</button>
-          <button class="filter-btn" data-filter="poesia">Poesía</button>
-        </div>
-      </nav>
+<!-- REEMPLAZA TODA LA SECCIÓN <header> en tu index.html con este código -->
+
+<header class="site-header">
+  <div class="container header-grid">
+    <div>
+      <a class="brand" href="https://emilioantunez.github.io/elrinconfranco/">
+        <img src="images/franco.png" alt="El Rincón Franco" class="brand-img">
+      </a>
+      <p class="tagline">Literatura desde mi verdad</p>
     </div>
-  </header>
+    <nav class="controls">
+      <div class="filters" role="tablist" aria-label="Filtrar por tipo">
+        <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="relato">Relatos</button>
+        <button class="filter-btn" data-filter="poesia">Poesía</button>
+      </div>
+      
+      <!-- Botón de Seguir (debajo de los filtros) -->
+      <button id="follow-btn" class="follow-btn" onclick="toggleFollow()">
+        🔔 Seguir Blog
+      </button>
+    </nav>
+  </div>
+</header>
 
   <main class="container">
     <section id="posts-list" class="posts-grid" aria-live="polite">
