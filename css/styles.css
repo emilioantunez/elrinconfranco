@@ -73,45 +73,52 @@ body{
 .read-btn{margin-top:0.8rem;align-self:flex-start;background:transparent;border:2px solid var(--accent);color:var(--accent-dark);padding:0.4rem 0.7rem;border-radius:999px;font-weight:700;cursor:pointer;transition:all .2s}
 .read-btn:hover{background:var(--accent);color:#fff}
 
-/* Botón de Seguir - Agregar a css/styles.css */
+/* Botón de Seguir */
 
-.follow-btn {
+.newsletter-form {
+  margin-top: 1rem;
+  padding: 1rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.newsletter-title {
   color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 25px;
-  font-family: 'Roboto', sans-serif;
+  margin: 0 0 0.75rem 0;
+  font-weight: 600;
   font-size: 0.95rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-  display: inline-flex;
-  align-items: center;
+}
+
+.subscribe-form {
+  display: flex;
   gap: 0.5rem;
-  margin-top: 1rem; /* Espacio arriba para separarlo de los filtros */
-  width: 100%; /* Ocupa todo el ancho disponible */
   justify-content: center;
 }
 
-.follow-btn:hover:not(:disabled) {
+.subscribe-input {
+  flex: 1;
+  max-width: 250px;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.subscribe-btn {
+  background: white;
+  color: #667eea;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.subscribe-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-}
-
-.follow-btn:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.follow-btn.following {
-  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-}
-
-.follow-btn:disabled {
-  background: #999;
-  cursor: not-allowed;
-  opacity: 0.6;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 /* Ajuste para que .controls maneje mejor el layout vertical */
